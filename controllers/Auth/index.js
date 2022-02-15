@@ -16,10 +16,6 @@ module.exports = {
       .then((result) => {
         if (!result) throw new Error("User not existt");
 
-        if (result && result.dataValues.is_login) {
-          throw new Error("User already login");
-        }
-
         return result;
       })
       .then((result) => {
@@ -49,14 +45,13 @@ module.exports = {
           });
       })
       .catch((error) =>
-        res.status(401).json({
+        res.status(400).json({
           status: "ERROR",
           messages: error.message,
           data: null,
         })
       );
   },
-
   // post auth/register
   register: (req, res) => {
     const requestBody = req.body;
@@ -95,7 +90,6 @@ module.exports = {
         })
       );
   },
-
   // get auth/logout
   logout: (req, res) => {
     const { id } = req.params;

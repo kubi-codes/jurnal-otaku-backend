@@ -3,8 +3,14 @@ const setRedis = require("../../utils/setRedis");
 
 module.exports = {
   getNews: (req, res) => {
+    const { limit, offset } = req.query;
+
     model.news
-      .findAll()
+      .findAndCountAll({
+        limit: parseInt(limit) || 3,
+        offset: parseInt(offset) || 0,
+        order: [["id", "DESC"]],
+      })
       .then((result) => {
         // Set data to redis for 10 seconds
         setRedis(req.originalUrl, JSON.stringify(result));
@@ -87,6 +93,30 @@ module.exports = {
         res.status(400).json({
           status: "ERROR",
           messages: error.message || "Something wrong",
+          data: null,
+        })
+      );
+  },
+  findNews: (req, res) => {
+    const { id } = req.params;
+
+    model.news
+      .findOne({
+        where: { id },
+      })
+      .then((result) => {
+        // Set data to redis for 10 seconds
+        setRedis(req.originalUrl, JSON.stringify(result));
+        res.json({
+          status: "OK",
+          messages: "",
+          data: result,
+        });
+      })
+      .catch((error) =>
+        res.json({
+          status: "ERROR",
+          messages: error.message,
           data: null,
         })
       );

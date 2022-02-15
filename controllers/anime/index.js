@@ -22,6 +22,31 @@ module.exports = {
         })
       );
   },
+  getAnimeBestOfWeek: (req, res) => {
+    model.sequelize
+      .query(
+        "SELECT COUNT(reviews.anime_id) as total, ROUND(AVG(reviews.rating)) as rating, animes.* FROM reviews INNER JOIN animes ON animes.id = reviews.anime_id GROUP BY reviews.anime_id LIMIT 3 OFFSET 0",
+        {
+          type: model.sequelize.QueryTypes.SELECT,
+        }
+      )
+      .then((result) => {
+        // Set data to redis for 10 seconds
+        setRedis(req.originalUrl, JSON.stringify(result));
+        res.json({
+          status: "OK",
+          messages: "",
+          data: result,
+        });
+      })
+      .catch((error) =>
+        res.json({
+          status: "ERROR",
+          messages: error.message,
+          data: null,
+        })
+      );
+  },
   addAnime: (req, res) => {
     const requestBody = req.body;
 

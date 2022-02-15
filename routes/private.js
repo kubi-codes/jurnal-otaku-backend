@@ -4,12 +4,6 @@ module.exports = [
   // BANNER
   {
     path: `${version}/banner`,
-    controllers: require("../controllers/banner").getBanner,
-    method: "get",
-    cache: true,
-  },
-  {
-    path: `${version}/banner`,
     controllers: require("../controllers/banner").addBanner,
     method: "post",
     cache: true,
@@ -28,12 +22,6 @@ module.exports = [
   },
 
   // ANIME
-  {
-    path: `${version}/anime`,
-    controllers: require("../controllers/anime").getAnime,
-    method: "get",
-    cache: true,
-  },
   {
     path: `${version}/anime`,
     controllers: require("../controllers/anime").addAnime,
@@ -56,12 +44,6 @@ module.exports = [
   // NEWS
   {
     path: `${version}/news`,
-    controllers: require("../controllers/news").getNews,
-    method: "get",
-    cache: true,
-  },
-  {
-    path: `${version}/news`,
     controllers: require("../controllers/news").addNews,
     method: "post",
     cache: true,
@@ -82,14 +64,14 @@ module.exports = [
   // REVIEWS
   {
     path: `${version}/reviews`,
-    controllers: require("../controllers/reviews").getReviews,
-    method: "get",
+    controllers: require("../controllers/reviews").addReviews,
+    method: "post",
     cache: true,
   },
   {
-    path: `${version}/reviews`,
-    controllers: require("../controllers/reviews").addReviews,
-    method: "post",
+    path: `${version}/reviews/profile/:id`,
+    controllers: require("../controllers/reviews").getProfileReviews,
+    method: "get",
     cache: true,
   },
   {
